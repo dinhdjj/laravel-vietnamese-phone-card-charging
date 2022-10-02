@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dinhdjj\VietnamesePhoneCardCharging\Tests;
 
+use Dinhdjj\VietnamesePhoneCardCharging\VietnamesePhoneCardChargingServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Dinhdjj\VietnamesePhoneCardCharging\VietnamesePhoneCardChargingServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -13,18 +15,11 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Dinhdjj\\VietnamesePhoneCardCharging\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'Dinhdjj\\VietnamesePhoneCardCharging\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
-    protected function getPackageProviders($app)
-    {
-        return [
-            VietnamesePhoneCardChargingServiceProvider::class,
-        ];
-    }
-
-    public function getEnvironmentSetUp($app)
+    public function getEnvironmentSetUp($app): void
     {
         config()->set('database.default', 'testing');
 
@@ -32,5 +27,12 @@ class TestCase extends Orchestra
         $migration = include __DIR__.'/../database/migrations/create_vietnamese-phone-card-charging_table.php.stub';
         $migration->up();
         */
+    }
+
+    protected function getPackageProviders($app)
+    {
+        return [
+            VietnamesePhoneCardChargingServiceProvider::class,
+        ];
     }
 }
